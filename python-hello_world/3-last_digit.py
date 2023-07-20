@@ -1,53 +1,37 @@
 import random
 
 
-def get_last_digit(number):
-    return abs(number) % 10
+def last_digit(number):
+  """
+  Returns the last digit of a number.
+
+  Args:
+    number: The number to get the last digit of.
+
+  Returns:
+    The last digit of the number.
+  """
+
+  last_digit = number % 10
+  return last_digit
 
 
-# Positive case
-number = random.randint(1, 10000)
-last_digit = get_last_digit(number)
-print(f"Last digit of {number} is {last_digit}", end=' ')
-if last_digit > 5:
-    print("and is greater than 5")
-elif last_digit == 0:
-    print("and is 0")
-else:
-    print("and is less than 6 and not 0")
+def main():
+  """
+  Prints the last digit of a number and its corresponding condition.
+  """
 
-# Negative case
-number = random.randint(-10000, -1)
-last_digit = get_last_digit(number)
-print(f"Last digit of {number} is {last_digit}", end=' ')
-if last_digit > 5:
-    print("and is greater than 5")
-elif last_digit == 0:
-    print("and is 0")
-else:
-    print("and is less than 6 and not 0")
+  number = random.randint(-10000, 10000)
+  last_digit = last_digit(number)
 
-# Zero case
-number = 0
-last_digit = get_last_digit(number)
-print(f"Last digit of {number} is {last_digit}", end=' ')
-if last_digit > 5:
-    print("and is greater than 5")
-elif last_digit == 0:
-    print("and is 0")
-else:
-    print("and is less than 6 and not 0")
+  if last_digit > 5:
+    print(f"Last digit of {number} is {last_digit} and is greater than 5")
+  elif last_digit == 0:
+    print(f"Last digit of {number} is {last_digit} and is 0")
+  else:
+    print(
+        f"Last digit of {number} is {last_digit} and is less than 6 and not 0")
 
-# Wrong type case
-try:
-    number = "invalid"
-    last_digit = get_last_digit(number)
-    print(f"Last digit of {number} is {last_digit}", end=' ')
-    if last_digit > 5:
-        print("and is greater than 5")
-    elif last_digit == 0:
-        print("and is 0")
-    else:
-        print("and is less than 6 and not 0")
-except TypeError as e:
-    print("TypeError")
+
+if __name__ == "__main__":
+  main()
