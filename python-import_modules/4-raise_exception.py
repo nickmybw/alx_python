@@ -3,9 +3,3 @@ def raise_exception():
     y = 5
     if not isinstance(y, str):
         raise TypeError("Only string values are allowed")
-
-
-try:
-    raise_exception()
-except TypeError as te:
-    print("Exception raised")
