@@ -14,7 +14,5 @@ def add(a, b):
 if __name__ == "__main__":
     a = 1
     b = 2
-
-    result = add(a, b)
-
-    print("{} + {} = {}".format(a, b, result))
+    from add_0 import add
+    print("{} + {} = {}".format(a, b, add(a, b)))
