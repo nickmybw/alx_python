@@ -1,12 +1,9 @@
-# Importing the add function from add_0.py
+#!/usr/bin/python3
 from add_0 import add
 
-# Define variables a and b
-a = 1
-b = 2
+if __name__ == "__main__":
+    a = 1
+    b = 2
 
-# Call the add function with variables a and b as arguments
-result = add(a, b)
-
-# Print the result using string formatting
-print(f"{a} + {b} = {result}")
+    result = add(a, b)
+    print(f"{a} + {b} = {result}")
