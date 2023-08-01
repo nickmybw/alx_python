@@ -1,13 +1,12 @@
-class Square(Rectangle):
-    def __init__(self, size=0, x=0, y=0, id=None):
-        """Initialize a square with the same width and height"""
+class Square:
+    def __init__(self, size=0):
+        """Initialize a square with a given size"""
         self.size = size
-        super().__init__(self.size, self.size, x, y, id)
 
     @property
     def size(self):
         """Getter for size attribute"""
-        return self.__size
+        return self._size
 
     @size.setter
     def size(self, size):
@@ -16,39 +15,48 @@ class Square(Rectangle):
             raise TypeError("size must be an integer")
         if size < 0:
             raise ValueError("size must be >= 0")
-        self.__size = size
+        self._size = size
+
+    def dict_(self):
+        """Return a dictionary representation of the square"""
+        return {'size': self.size}
 
 
-Square = __import__('1-square').Square
+# Create a square with size 3
+mysquare = Square(3)
+print(type(mysquare))
+print(mysquare.dict_())
 
-my_square_1 = Square(3)
-print(type(my_square_1))
-print(my_square_1.__dict__)
+# Create a square with size 89
+mysquare = Square(89)
+print(type(mysquare))
+print(mysquare.dict_())
 
-my_square_2 = Square()
-print(type(my_square_2))
-print(my_square_2.__dict__)
+# Create a square with default size (0)
+mysquare = Square()
+print(type(mysquare))
+print(mysquare.dict_())
 
+# Try to create a square with invalid size (string)
 try:
-    print(my_square_1.size)
+    mysquare = Square("3")
+    print(type(mysquare))
+    print(mysquare.dict_())
 except Exception as e:
     print(e)
 
+# Try to create a square with invalid size (float)
 try:
-    print(my_square_1.__size)
+    mysquare = Square(3.14)
+    print(type(mysquare))
+    print(mysquare.dict_())
 except Exception as e:
     print(e)
 
+# Try to create a square with invalid size (negative integer)
 try:
-    my_square_3 = Square("3")
-    print(type(my_square_3))
-    print(my_square_3.__dict__)
-except Exception as e:
-    print(e)
-
-try:
-    my_square_4 = Square(-89)
-    print(type(my_square_4))
-    print(my_square_4.__dict__)
+    mysquare = Square(-89)
+    print(type(mysquare))
+    print(mysquare.dict_())
 except Exception as e:
     print(e)
