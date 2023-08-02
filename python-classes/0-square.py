@@ -47,8 +47,4 @@ class Square:
 
 
 
-my_square = Square(3)
-print(my_square.size())
-print(my_square.area())
-print(my_square.perimeter())
-print(my_square)
+
