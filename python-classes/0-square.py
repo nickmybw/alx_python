@@ -9,42 +9,34 @@ class Square:
     def __init__(self, size):
         self.__size = size
 
-    def area(self):
+    def dict_(self):
         """
-        Calculates the area of the square.
+        Returns the dictionary representation of the square.
 
         Returns:
-            int: The area of the square.
+            dict: The dictionary representation of the square.
         """
-        return self.__size ** 2
-
-    def perimeter(self):
-        """
-        Calculates the perimeter of the square.
-
-        Returns:
-            int: The perimeter of the square.
-        """
-        return 4 * self.__size
-
-    def __str__(self):
-        """
-        Returns a string representation of the square.
-
-        Returns:
-            str: A string representation of the square.
-        """
-        return f'Square with size {self.__size}'
-
-    def size(self):
-        """
-        Returns the size of the square.
-
-        Returns:
-            int: The size of the square.
-        """
-        return self.__size
+        return {'size': self.__size}
 
 
+# Test case 1
+my_square = Square(3)
+print(type(my_square))  # <class '__main__.Square'>
+print(my_square.dict_())  # {'size': 3}
 
+# Test case 2
+my_square = Square(89)
+print(type(my_square))  # <class '__main__.Square'>
+print(my_square.dict_())  # {'size': 89}
 
+# Test case 3
+try:
+    print(my_square.size)
+except AttributeError as e:
+    print(e)  # 'Square' object has no attribute 'size'
+
+# Test case 4
+try:
+    print(my_square._size)
+except AttributeError as e:
+    print(e)  # 'Square' object has no attribute '_size'
