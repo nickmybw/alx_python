@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+"""ALX Python-Inheritance Task 0"""
 
 def is_same_class(obj, a_class):
     """
