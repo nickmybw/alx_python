@@ -1,5 +1,4 @@
-"""ALX Python inheritance Task 2"""
-
+"""ALX task 2"""
 def inherits_from(obj, a_class):
     """
     Returns True if the object is an instance of a class that inherited (directly or indirectly) from the specified class;
