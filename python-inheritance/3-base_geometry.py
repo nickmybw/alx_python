@@ -1,11 +1,15 @@
 """ALX task 3"""
-
 class BaseGeometry:
     """
-    An empty class that serves as the base class for geometry-related classes.
+    Empty class representing the base geometry.
     """
     pass
 
 
-bg = BaseGeometry()
-print(dir(bg))
+if __name__ == "__main__":
+    # Test case: bg = BaseGeometry() print(dir(bg))
+    bg = BaseGeometry()
+    print(dir(bg))
+
+    # Test case: print(dir(BaseGeometry))
+    print(dir(BaseGeometry))
