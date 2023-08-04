@@ -1,3 +1,4 @@
+"""ALX task 0 of Python objects and Classes"""
 class Square:
     """
     This class represents a square.
