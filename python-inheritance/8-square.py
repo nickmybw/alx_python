@@ -67,11 +67,12 @@ class Rectangle(BaseGeometry):
         """
         return f"[Rectangle] {self.__width}/{self.__height}"
 
+
 class Square(Rectangle):
     """
     A class representing a square.
 
-    Inherits from Rectangle and contains size attribute.
+    Inherits from Rectangle and contains a size attribute.
     """
 
     def __init__(self, size):
@@ -81,4 +82,21 @@ class Square(Rectangle):
         :param size: The size of the square (positive integer).
         """
         super().__init__(size, size)
+        self.__size = size
         self.integer_validator("size", size)
+
+    def area(self):
+        """
+        Calculate the area of the square.
+
+        :return: The area of the square.
+        """
+        return self.__size ** 2
+
+    def __str__(self):
+        """
+        Return a string representation of the square.
+
+        :return: A string representation of the square.
+        """
+        return f"[Square] {self.__size}/{self.__size}"
