@@ -10,7 +10,3 @@ def inherits_from(obj, a_class):
     """
     return isinstance(obj, type) and issubclass(obj, a_class) and obj != a_class
 
-
-if __name__ == "__main__":
-    # You can add some test cases here to verify the function's functionality.
-    pass
