@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+"""ALX task 6"""
 
 class BaseGeometry:
     """
