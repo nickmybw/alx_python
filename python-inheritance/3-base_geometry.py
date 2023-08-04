@@ -1,8 +1,7 @@
 """ALX task 3"""
+
 class BaseGeometry:
     """
-    Empty class representing the base geometry.
+    An empty class that serves as the base class for geometry-related classes.
     """
     pass
-
-
