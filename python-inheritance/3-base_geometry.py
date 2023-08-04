@@ -1,10 +1,8 @@
-"""ALX task 3"""
+"""Alx task 3"""
 class BaseGeometry:
     """
-    An empty class representing a base geometry.
+    Empty class representing the base geometry.
 
-    This class can be used as a base for more specific geometry classes.
-    It currently does not have any attributes or methods.
+    This class will be used as a base class for other geometry-related classes.
+    It does not contain any methods or attributes at the moment.
     """
-    pass
-
