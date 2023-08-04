@@ -1,4 +1,4 @@
-"""ALX Python Inheritance Task 2"""
+"""ALX Python-Inheritance Task 2"""
 
 def inherits_from(obj, a_class):
     """
@@ -9,3 +9,4 @@ def inherits_from(obj, a_class):
     :return: True if obj is an instance of a class that inherited from a_class; otherwise False.
     """
     return issubclass(type(obj), a_class) and type(obj) != a_class
+
