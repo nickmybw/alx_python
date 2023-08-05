@@ -24,7 +24,7 @@ class BaseGeometry(metaclass=BaseGeometryMeta):
         new_attribute_list = [
             item for item in attributes if item != '__init_subclass__']
         return new_attribute_list
-
+ 
 
     def area(self):
         """
@@ -99,22 +99,6 @@ class Square(Rectangle):
 
         :param size: The size of the square (positive integer).
         """
+        self.__size = super().integer_validator("size", size)
         super().__init__(size, size)
-        self.__size = size
-        self.integer_validator("size", size)
 
-    def area(self):
-        """
-        Calculate the area of the square.
-
-        :return: The area of the square.
-        """
-        return self.__size ** 2
-
-    def __str__(self):
-        """
-        Return a string representation of the square.
-
-        :return: A string representation of the square.
-        """
-        return f"[Square] {self.__size}/{self.__size}"
