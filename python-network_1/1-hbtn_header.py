@@ -1,26 +1,26 @@
 """
-This script sends a request to a specified URL and displays the value of the variable X-Request-Id in the response header.
+Module to fetch and display the value of the X-Request-Id header from a URL using requests.
 """
 
 import requests
 import sys
 
 
-def get_request_id(url):
+def fetch_x_request_id(url):
     """
-    Sends a GET request to the specified URL and returns the value of the X-Request-Id header.
-
-    Args:
-        url (str): The URL to send the request to.
-
-    Returns:
-        str: The value of the X-Request-Id header.
+    Fetches and displays the value of the X-Request-Id header from the response.
     """
     response = requests.get(url)
-    return response.headers.get('X-Request-Id')
+    x_request_id = response.headers.get('X-Request-Id')
+
+    if x_request_id:
+        print(x_request_id)
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python3 script.py <URL>")
+        sys.exit(1)
+
     url = sys.argv[1]
-    request_id = get_request_id(url)
-    print("X-Request-Id: {}".format(request_id))
+    fetch_x_request_id(url)
