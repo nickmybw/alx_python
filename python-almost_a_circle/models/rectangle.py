@@ -174,7 +174,7 @@ class Rectangle(Base):
 
         Args:
             *args: A variable number of arguments in the order of id, width, height, x, and y.
-            **kwargs: A variable number of keyword arguments representing attributes of the rectangle.
+            **kwargs: A variable number of keyword arguments representing the attributes of the rectangle.
         """
         if len(args) > 0:
             self.id = args[0]
@@ -186,8 +186,15 @@ class Rectangle(Base):
             self.x = args[3]
         if len(args) > 4:
             self.y = args[4]
-        if len(args) == 0 or args is None:
+        if len(args) == 0 or len(kwargs) > 0:
             for key, value in kwargs.items():
-                if hasattr(self, key):
-                    setattr(self, key, value)
-        super().update(*args)
+                if key == "id":
+                    self.id = value
+                elif key == "width":
+                    self.width = value
+                elif key == "height":
+                    self.height = value
+                elif key == "x":
+                    self.x = value
+                elif key == "y":
+                    self.y = value
