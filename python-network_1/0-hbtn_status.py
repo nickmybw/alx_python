@@ -12,7 +12,7 @@ def main():
     """
     Sends a GET request to https://alu-intranet.hbtn.io/status and displays the body of the response.
     """
-    url = "https://alu-intranet.hbtn.io/status"
+    url = "http://0.0.0.0:5050/status"
     response = requests.get(url)
     print("Body response:")
     print("\t- type: {}".format(type(response.text)))
