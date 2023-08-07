@@ -1,7 +1,6 @@
 """ALX Task 2"""
 from models.base import Base
 
-
 class Rectangle(Base):
     """
     Rectangle class that inherits from Base class.
@@ -45,6 +44,7 @@ class Rectangle(Base):
 
         Raises:
             ValueError: If the width is not a positive integer.
+            TypeError: If the width is not an integer.
         """
         if not isinstance(value, int):
             raise TypeError("Width must be an integer.")
@@ -72,6 +72,7 @@ class Rectangle(Base):
 
         Raises:
             ValueError: If the height is not a positive integer.
+            TypeError: If the height is not an integer.
         """
         if not isinstance(value, int):
             raise TypeError("Height must be an integer.")
@@ -99,11 +100,12 @@ class Rectangle(Base):
 
         Raises:
             ValueError: If x is less than 0.
+            TypeError: If x is not an integer.
         """
         if not isinstance(value, int):
-            raise TypeError("x must be an integer.")
+            raise TypeError("X must be an integer.")
         if value < 0:
-            raise ValueError("x must be >= 0.")
+            raise ValueError("X must be >= 0.")
         self.__x = value
 
     @property
@@ -126,9 +128,10 @@ class Rectangle(Base):
 
         Raises:
             ValueError: If y is less than 0.
+            TypeError: If y is not an integer.
         """
         if not isinstance(value, int):
-            raise TypeError("y must be an integer.")
+            raise TypeError("Y must be an integer.")
         if value < 0:
-            raise ValueError("y must be >= 0.")
+            raise ValueError("Y must be >= 0.")
         self.__y = value
