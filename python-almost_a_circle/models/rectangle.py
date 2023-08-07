@@ -154,8 +154,10 @@ class Rectangle(Base):
 
         Prints the rectangle to the standard output (stdout).
         """
-        for _ in range(self.height):
-            print("#" * self.width)
+        for i in range(self.y):
+            print()
+        for i in range(self.height):
+            print(" " * self.x + "#" * self.width)
 
     def __str__(self):
         """
