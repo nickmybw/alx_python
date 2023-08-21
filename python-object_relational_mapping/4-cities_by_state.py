@@ -1,4 +1,5 @@
-"""Module documentation: This script connects to a MySQL database and retrieves."""
+"""Module documentation: This script connects
+to a MySQL database and retrieves."""
 
 import sys
 import MySQLdb
