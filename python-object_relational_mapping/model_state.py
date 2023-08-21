@@ -9,7 +9,8 @@ Base = declarative_base()
 
 class State(Base):
     """
-    Class documentation: This class represents the 'states' table in the database.
+    Class documentation: This class represents the 'states'
+    table in the database.
     """
     __tablename__ = 'states'
     id = Column(Integer, primary_key=True, nullable=False)
