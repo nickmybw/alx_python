@@ -22,8 +22,10 @@ def list_cities_by_state(username, password, db_name):
     """
     try:
         # Connect to the database
-        db = MySQLdb.connect(host="localhost", port=3306, user=username,
-                             passwd=password, db=db_name)
+        db = MySQLdb.connect(
+            host="localhost", port=3306, user=username,
+            passwd=password, db=db_name
+        )
 
         # Create a cursor object to interact with the database
         cursor = db.cursor()
