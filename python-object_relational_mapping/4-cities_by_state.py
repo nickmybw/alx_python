@@ -9,13 +9,13 @@ import MySQLdb
 
 def list_cities_by_state(username, password, db_name):
     """
-    Function documentation: Connects to the MySQL database and retrieves cities
-    along with their corresponding state names from the 'cities' and 'states' tables.
-
+    Function documentation: Connects to the database and retrieves values
+    from the 'states' table based on the provided state name in a safe way.
     Args:
         username (str): MySQL username.
         password (str): MySQL password.
         db_name (str): Database name.
+        state_name (str): State name to search for.
 
     Returns:
         None.
