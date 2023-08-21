@@ -1,46 +1,58 @@
-"""aLX python object relational mapping task 1"""
-import MySQLdb
+"""
+Module documentation: This script connects to a MySQL database and retrieves
+states whose names start with 'N' from the 'states' table in ascending order
+based on 'id'.
+"""
+
 import sys
+import MySQLdb
 
 
-def filter_states(username, password, database):
+def filter_states(username, password, db_name):
     """
-    Lists all states from the database hbtn_0e_0_usa with a name starting with N (upper N).
+    Function documentation: Connects to the MySQL database and retrieves states
+    whose names start with 'N' from the 'states' table in ascending order based
+    on 'id'.
 
     Args:
-        username (str): The MySQL username.
-        password (str): The MySQL password.
-        database (str): The name of the database.
+        username (str): MySQL username.
+        password (str): MySQL password.
+        db_name (str): Database name.
 
     Returns:
-        None
-
-    Raises:
-        MySQLdb.Error: If there is an error executing the query.
-
+        None.
     """
-    # Connect to the MySQL server
-    db = MySQLdb.connect(host="localhost", user=username,
-                         passwd=password, db=database)
+    try:
+        # Connect to the database
+        db = MySQLdb.connect(host="localhost", port=3306, user=username,
+                             passwd=password, db=db_name)
 
-    # Create a cursor object
-    cursor = db.cursor()
+        # Create a cursor object to interact with the database
+        cursor = db.cursor()
 
-    # Execute the query
-    cursor.execute("SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC")
+        # Execute the SQL query to filter states starting with 'N'
+        query = "SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC"
+        cursor.execute(query)
 
-    # Fetch the results
-    results = cursor.fetchall()
+        # Fetch all rows and display them
+        results = cursor.fetchall()
+        for row in results:
+            print(row)
 
-    # Display the results
-    for row in results:
-        print(row)
-
-    # Close the cursor and database connection
-    cursor.close()
-    db.close()
+    except MySQLdb.Error as e:
+        print("MySQL Error: {}".format(e))
+    finally:
+        if db:
+            db.close()
 
 
-if __name__ == '__main__':
-    # Call the filter_states function with the command line arguments
-    filter_states(sys.argv[1], sys.argv[2], sys.argv[3])
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+        print("Usage: {} <username> <password> <database>".format(sys.argv[0]))
+        sys.exit(1)
+
+    username = sys.argv[1]
+    password = sys.argv[2]
+    db_name = sys.argv[3]
+
+    filter_states(username, password, db_name)
