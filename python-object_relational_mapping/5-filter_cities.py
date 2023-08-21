@@ -28,9 +28,13 @@ def list_cities(username, password, database, state_name):
     # Create a cursor object
     cursor = db.cursor()
 
-    # Execute the query
-    query = "SELECT cities.name FROM cities JOIN states ON cities.state_id = states.id WHERE states.name = %s ORDER BY cities.id ASC"
-    cursor.execute(query, (state_name,))
+
+# Execute the query
+query = "SELECT cities.name FROM cities " \
+        "JOIN states ON cities.state_id = states.id " \
+        "WHERE states.name = %s " \
+        "ORDER BY cities.id ASC"
+cursor.execute(query, (state_name,))
 
     # Fetch the results
     results = cursor.fetchall()
