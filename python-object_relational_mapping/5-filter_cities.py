@@ -1,61 +1,49 @@
 """aLX python object relational mapping task 5"""
 
-import sys
 import MySQLdb
+import sys
 
 
-def filter_cities_by_state(username, password, db_name, state_name):
+def list_cities(username, password, database, state_name):
     """
-    Function documentation: Connects to the MySQL database and retrieves cities
-    of a specified state from the 'cities' and 'states' tables.
+    Lists all cities of a state from the database hbtn_0e_4_usa.
 
     Args:
-        username (str): MySQL username.
-        password (str): MySQL password.
-        db_name (str): Database name.
-        state_name (str): State name to search for.
+        username (str): The MySQL username.
+        password (str): The MySQL password.
+        database (str): The name of the database.
+        state_name (str): The name of the state.
 
     Returns:
-        None.
+        None
+
+    Raises:
+        MySQLdb.Error: If there is an error executing the query.
+
     """
-    try:
-        # Connect to the database
-        db = MySQLdb.connect(host="localhost", port=3306, user=username,
-                             passwd=password, db=db_name)
+    # Connect to the MySQL server
+    db = MySQLdb.connect(host="localhost", user=username,
+                         passwd=password, db=database)
 
-        # Create a cursor object to interact with the database
-        cursor = db.cursor()
+    # Create a cursor object
+    cursor = db.cursor()
 
-        # Create the SQL query with user input and execute
-        query = (
-            "SELECT GROUP_CONCAT(cities.name ORDER BY cities.id ASC SEPARATOR ', ') "
-            "FROM cities "
-            "INNER JOIN states ON cities.state_id = states.id "
-            "WHERE states.name = %s"
-        )
-        cursor.execute(query, (state_name,))
+    # Execute the query
+    query = "SELECT cities.name FROM cities JOIN states ON cities.state_id = states.id WHERE states.name = %s ORDER BY cities.id ASC"
+    cursor.execute(query, (state_name,))
 
-        # Fetch the result and display it
-        result = cursor.fetchone()
-        if result:
-            print(result[0])
+    # Fetch the results
+    results = cursor.fetchall()
 
-    except MySQLdb.Error as e:
-        print("MySQL Error: {}".format(e))
-    finally:
-        if db:
-            db.close()
+    # Display the results
+    cities = [row[0] for row in results]
+    print(", ".join(cities))
+
+    # Close the cursor and database connection
+    cursor.close()
+    db.close()
 
 
-if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print("Usage: {} <username> <password> <database> <state_name>".format(
-            sys.argv[0]))
-        sys.exit(1)
-
-    username = sys.argv[1]
-    password = sys.argv[2]
-    db_name = sys.argv[3]
-    state_name = sys.argv[4]
-
-    filter_cities_by_state(username, password, db_name, state_name)
+if __name__ == '__main__':
+    # Call the list_cities function with the command line arguments
+    list_cities(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
