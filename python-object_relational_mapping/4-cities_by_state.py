@@ -1,7 +1,4 @@
-"""
-Module documentation: This script connects to a MySQL database and retrieves
-cities along with their corresponding state names from the 'cities' and 'states' tables.
-"""
+"""Module documentation: This script connects to a MySQL database and retrieves."""
 
 import sys
 import MySQLdb
