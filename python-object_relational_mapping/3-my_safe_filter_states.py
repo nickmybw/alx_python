@@ -1,4 +1,4 @@
-"""aLX python object relational mapping task 3
+"""
 Module documentation: This script connects to a MySQL database and retrieves
 values from the 'states' table based on the provided state name in a safe way.
 """
@@ -6,16 +6,17 @@ values from the 'states' table based on the provided state name in a safe way.
 import sys
 import MySQLdb
 
+
 def filter_states_by_name(username, password, db_name, state_name):
     """
     Function documentation: Connects to the MySQL database and retrieves values
     from the 'states' table based on the provided state name in a safe way.
 
     Args:
-        username(str): MySQL username.
-        password(str): MySQL password.
-        db_name(str): Database name.
-        state_name(str): State name to search for .
+        username (str): MySQL username.
+        password (str): MySQL password.
+        db_name (str): Database name.
+        state_name (str): State name to search for.
 
     Returns:
         None.
@@ -43,9 +44,11 @@ def filter_states_by_name(username, password, db_name, state_name):
         if db:
             db.close()
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 5:
-        print("Usage: {} <username> <password> <database> <state_name>".format(sys.argv[0]))
+        print("Usage: {} <username> <password> <database> <state_name>".format(
+            sys.argv[0]))
         sys.exit(1)
 
     username = sys.argv[1]
