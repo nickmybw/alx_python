@@ -1,5 +1,6 @@
 """
-Module documentation: This script lists all State objects from the database hbtn_0e_6_usa.
+Module documentation: This script lists all State objects
+from the database hbtn_0e_6_usa.
 """
 
 import sys
