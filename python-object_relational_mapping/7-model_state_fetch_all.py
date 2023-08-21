@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 Module documentation: This script connects to a MySQL database and retrieves
 all State objects from the 'states' table using SQLAlchemy ORM.
