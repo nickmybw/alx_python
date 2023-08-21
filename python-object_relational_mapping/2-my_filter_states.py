@@ -1,50 +1,56 @@
-"""aLX python object relational mapping task 2"""
-import MySQLdb
+"""aLX python object relational mapping task 2
+Module documentation: This script connects to a MySQL database and retrieves
+values from the 'states' table based on the provided state name.
+"""
 import sys
-
-
-def filter_states_by_user_input(username, password, database, state_name):
+import MySQLdb
+def filter_states_by_name(username, password, db_name, state_name):
     """
-    Lists all states from the database hbtn_0e_0_usa where name matches the argument.
+    Function documentation: Connects to the MySQL database and retrieves values
+    from the 'states' table based on the provided state name.
 
     Args:
-        username (str): The MySQL username.
-        password (str): The MySQL password.
-        database (str): The name of the database.
-        state_name (str): The name of the state to search for.
+        username (str): MySQL username.
+        password (str): MySQL password.
+        db_name (str): Database name.
+        state_name (str): State name to search for.
 
     Returns:
-        None
-
-    Raises:
-        MySQLdb.Error: If there is an error executing the query.
-
+        None.
     """
-    # Connect to the MySQL server
-    db = MySQLdb.connect(host="localhost", user=username,
-                         passwd=password, db=database)
+    try:
+        # Connect to the database
+        db = MySQLdb.connect(host="localhost", port=3306, user=username,
+                             passwd=password, db=db_name)
 
-    # Create a cursor object
-    cursor = db.cursor()
+        # Create a cursor object to interact with the database
+        cursor = db.cursor()
 
-    # Execute the query
-    query = "SELECT * FROM states WHERE name LIKE '{}' ORDER BY id ASC".format(
-        state_name)
-    cursor.execute(query)
+        # Create the SQL query with user input and execute it
+        query = "SELECT * FROM states WHERE name LIKE %s ORDER BY id ASC"
+        cursor.execute(query, (state_name,))
 
-    # Fetch the results
-    results = cursor.fetchall()
+        # Fetch all rows and display them
+        results = cursor.fetchall()
+        for row in results:
+            print(row)
 
-    # Display the results
-    for row in results:
-        print(row)
-
-    # Close the cursor and database connection
-    cursor.close()
-    db.close()
+    except MySQLdb.Error as e:
+        print("MySQL Error: {}".format(e))
+    finally:
+        if db:
+            db.close()
 
 
-if __name__ == '__main__':
-    # Call the filter_states_by_user_input function with the command line arguments
-    filter_states_by_user_input(
-        sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+if __name__ == "__main__":
+    if len(sys.argv) != 5:
+        print("Usage: {} <username> <password> <database> <state_name>".format(
+            sys.argv[0]))
+        sys.exit(1)
+
+    username = sys.argv[1]
+    password = sys.argv[2]
+    db_name = sys.argv[3]
+    state_name = sys.argv[4]
+
+    filter_states_by_name(username, password, db_name, state_name)
