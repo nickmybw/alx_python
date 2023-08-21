@@ -2,6 +2,7 @@
 Module documentation: This script connects to a MySQL database and retrieves
 values from the 'states' table based on the provided state name.
 """
+
 import sys
 import MySQLdb
 def filter_states_by_name(username, password, db_name, state_name):
