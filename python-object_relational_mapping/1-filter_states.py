@@ -1,5 +1,5 @@
 """
-Script that lists all states with a name starting with N (upper N)
+Lists all states with a name starting with N (upper N) 
 from the database hbtn_0e_0_usa
 """
 
@@ -7,37 +7,15 @@ import MySQLdb
 import sys
 
 if __name__ == "__main__":
-    # Check if all arguments are provided
-    if len(sys.argv) != 4:
-        print("Usage: {} <username> <password> <database>".format(sys.argv[0]))
-        sys.exit(1)
-
-    username = sys.argv[1]
-    password = sys.argv[2]
-    database = sys.argv[3]
-
-    # Connect to the MySQL server
-    db = MySQLdb.connect(
-        host="localhost",
-        port=3306,
-        user=username,
-        passwd=password,
-        db=database,
-    )
-
-    # Create a cursor to interact with the database
+    # Connects to MySQL server running on localhost at port 3306
+    db = MySQLdb.connect(host="localhost", port=3306,
+                         user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
+    # Executes the SQL query
     cur = db.cursor()
-
-    # Execute the query to select states starting with 'N' (upper N)
-    query = ("SELECT * FROM states"
-             "WHERE name LIKE 'N%' AND name NOT LIKE 'n%' ORDER BY id ASC")
-    cur.execute(query)
-
-    # Fetch and display the results
-    results = cur.fetchall()
-    for row in results:
+    cur.execute("SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC")
+    # Prints the results
+    for row in cur.fetchall():
         print(row)
-
-    # Close cursor and connection
+    # Closes all cursors and the database connection
     cur.close()
     db.close()
