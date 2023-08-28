@@ -1,64 +1,48 @@
 """ALX python web framework task 5"""
 
-
-# Import Flask and render_template
+# Importing the necessary modules
 from flask import Flask, render_template
 
-# Create a Flask app instance
+# Creating an instance of the Flask application
 app = Flask(__name__)
-
-# Define a route and its corresponding function for the root URL
 
 
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
-    """Display 'Hello HBNB!' when the root route is accessed."""
+    """Displays 'Hello HBNB!'"""
     return 'Hello HBNB!'
-
-# Define a route and its corresponding function for the /hbnb URL
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """Display 'HBNB' when the /hbnb route is accessed."""
+    """Displays 'HBNB'"""
     return 'HBNB'
-
-# Define a route and its corresponding function for the /c/<text> URL
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c_route(text):
-    """Display 'C <text>' when the /c/<text> route is accessed."""
-    decoded_text = unquote(text).replace('_', ' ')
-    return 'C ' + decoded_text
-
-# Define a route and its corresponding function for the /python/(<text>) URL
+def c_text(text):
+    """Displays 'C ' followed by the value of the text variable"""
+    return 'C {}'.format(text.replace('_', ' '))
 
 
 @app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def python_route(text):
-    """Display 'Python <text>' when the /python/(<text>) route is accessed."""
-    decoded_text = unquote(text).replace('_', ' ')
-    return 'Python ' + decoded_text
-
-# Define a route and its corresponding function for the /number/<n> URL
+def python_text(text):
+    """Displays 'Python ' followed by the value of the text variable"""
+    return 'Python {}'.format(text.replace('_', ' '))
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
-    """Display '<n> is a number' when the /number/<n> route is accessed."""
+    """Displays 'n is a number' if n is an integer"""
     return '{} is a number'.format(n)
-
-# Define a route and its corresponding function for the /number_template/<n> URL
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def number_template(n):
-    """Display an HTML page with the number 'n' inside an H1 tag."""
+    """Displays an HTML page with the value of n inside an H1 tag"""
     return render_template('5-number.html', n=n)
 
 
-# Run the app if this script is executed directly
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
