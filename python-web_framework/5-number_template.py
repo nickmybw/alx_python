@@ -46,7 +46,7 @@ def python_route(text):
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
-def number_route(n):
+def number(n):
     """Display '<n> is a number' when the /number/<n> route is accessed."""
     return '{} is a number'.format(n)
 
@@ -54,7 +54,7 @@ def number_route(n):
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
-def number_template_route(n):
+def number_template(n):
     """Display an HTML page with the number 'n' inside an H1 tag."""
     return render_template('5-number.html', n=n)
 
