@@ -1,9 +1,9 @@
 """
-Gather data from an API and export to CSV
+Export data to CSV
 """
 import requests
 import sys
-import csv  # Import the CSV library
+import csv
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -28,23 +28,16 @@ if __name__ == "__main__":
     user_data = user_response.json()
     todo_data = todo_response.json()
 
-    employee_name = user_data.get("name")
+    employee_id = user_data.get("id")
+    employee_name = user_data.get("username")
 
-    # Create a CSV file with the user's ID as the filename
-    csv_filename = "{}.csv".format(employee_id)
+    completed_tasks = [(employee_id, employee_name, task.get(
+        "completed"), task.get("title")) for task in todo_data]
 
-    with open(csv_filename, mode='w', newline='') as csv_file:
-        csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+    csv_file = "{}.csv".format(employee_id)
 
-        # Write the header row to the CSV file
-        csv_writer.writerow(
-            ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+    with open(csv_file, mode='w', newline='') as file:
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+        writer.writerows(completed_tasks)
 
-        # Write each task to the CSV file
-        for task in todo_data:
-            task_completed = task.get("completed")
-            task_title = task.get("title")
-            csv_writer.writerow(
-                [employee_id, employee_name, str(task_completed), task_title])
-
-    print("CSV file '{}' has been created with the task data.".format(csv_filename))
+    print("Data exported to {}.csv".format(employee_id))
