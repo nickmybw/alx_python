@@ -1,38 +1,45 @@
-"""
-Gather data from an API
-"""
 import requests
 import sys
 
-if __name__ == "__main__":
+
+def get_employee_data(employee_id):
+    # Define the base URL for the API
+    base_url = "https://jsonplaceholder.typicode.com/"
+
+    # Make a GET request to fetch employee details
+    employee_response = requests.get(f"{base_url}users/{employee_id}")
+    employee_data = employee_response.json()
+
+    # Make a GET request to fetch employee's TODO list
+    todo_response = requests.get(f"{base_url}users/{employee_id}/todos")
+    todo_list = todo_response.json()
+
+    return employee_data, todo_list
+
+
+def main():
     if len(sys.argv) != 2:
-        sys.exit("Usage: ./0-gather_data_from_an_API.py <employee_id>")
+        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
+        sys.exit(1)
 
-    employee_id = sys.argv[1]
+    employee_id = int(sys.argv[1])
 
-    user_url = "https://jsonplaceholder.typicode.com/users/{}".format(
-        employee_id)
-    todo_url = "https://jsonplaceholder.typicode.com/users/{}/todos".format(
-        employee_id)
+    # Fetch employee data and TODO list
+    employee_data, todo_list = get_employee_data(employee_id)
 
-    user_response = requests.get(user_url)
-    todo_response = requests.get(todo_url)
+    # Extract relevant information
+    employee_name = employee_data["name"]
+    total_tasks = len(todo_list)
+    completed_tasks = sum(1 for task in todo_list if task["completed"])
+    completed_task_titles = [task["title"]
+                             for task in todo_list if task["completed"]]
 
-    if user_response.status_code != 200:
-        sys.exit("Error: User data not found")
+    # Display the information in the specified format
+    print(
+        f"Employee {employee_name} is done with tasks({completed_tasks}/{total_tasks}):")
+    for title in completed_task_titles:
+        print(f"\t{title}")
 
-    if todo_response.status_code != 200:
-        sys.exit("Error: TODO data not found")
 
-    user_data = user_response.json()
-    todo_data = todo_response.json()
-
-    employee_name = user_data.get("name")
-    total_tasks = len(todo_data)
-    completed_tasks = [task for task in todo_data if task.get("completed")]
-
-    print("Employee {} is done with tasks({}/{}):".format(
-        employee_name, len(completed_tasks), total_tasks))
-
-    for task in completed_tasks:
-        print("\t {}".format(task.get("title")))
+if __name__ == "__main__":
+    main()
