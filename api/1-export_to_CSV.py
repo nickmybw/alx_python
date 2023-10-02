@@ -1,46 +1,36 @@
-"""
-Gather data from an API and export to CSV
-"""
-import requests
-import sys
 import csv
+import json
+import sys
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        sys.exit("Usage: ./1-export_to_CSV.py <employee_id>")
+def export_to_csv(user_id):
+    # Load data from your source (e.g., JSON data)
+    with open('data.json', 'r') as data_file:
+        data = json.load(data_file)
 
-    employee_id = sys.argv[1]
+    # Filter tasks owned by the specified user
+    user_tasks = [task for task in data if task['userId'] == user_id]
 
-    user_url = "https://jsonplaceholder.typicode.com/users/{}".format(
-        employee_id)
-    todo_url = "https://jsonplaceholder.typicode.com/users/{}/todos".format(
-        employee_id)
+    # Define the CSV file name
+    csv_filename = f"{user_id}.csv"
 
-    user_response = requests.get(user_url)
-    todo_response = requests.get(todo_url)
+    # Write the tasks to the CSV file
+    with open(csv_filename, 'w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
 
-    if user_response.status_code != 200:
-        sys.exit("Error: User data not found")
-
-    if todo_response.status_code != 200:
-        sys.exit("Error: TODO data not found")
-
-    user_data = user_response.json()
-    todo_data = todo_response.json()
-
-    employee_name = user_data.get("username")
-    csv_filename = "{}.csv".format(employee_id)
-
-    with open(csv_filename, mode='w', newline='') as csv_file:
-        csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+        # Write the header row
         csv_writer.writerow(
             ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
 
-        for task in todo_data:
-            task_id = task.get("id")
-            task_title = task.get("title")
-            task_completed = task.get("completed")
+        # Write each task as a row in the CSV file
+        for task in user_tasks:
             csv_writer.writerow(
-                [employee_id, employee_name, str(task_completed), task_title])
+                [task['userId'], task['username'], str(task['completed']), task['title']])
 
-    print("Data exported to {}".format(csv_filename))
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python3 1-export_to_CSV.py <USER_ID>")
+        sys.exit(1)
+
+    user_id = int(sys.argv[1])
+    export_to_csv(user_id)
