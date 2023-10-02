@@ -1,5 +1,6 @@
 import sys
 import requests
+python
 
 
 def get_employee_details(employee_id):
@@ -33,7 +34,7 @@ def display_employee_todo_progress(employee_id):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python3 0-gather_data_from_an_API.py EMPLOYEE_ID")
+        print("Usage: python3 main_4.py EMPLOYEE_ID")
         sys.exit(1)
 
     employee_id = int(sys.argv[1])
