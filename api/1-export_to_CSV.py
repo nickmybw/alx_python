@@ -1,64 +1,87 @@
 import csv
-import json
+import requests
 import sys
+import cvs
 
 
-def export_to_csv(user_id):
-    # Load data from your source (e.g., JSON data)
-    with open('data.json', 'r') as data_file:
-        data = json.load(data_file)
+def fetch_employee_data(employee_id):
+    # Define the API endpoints for the employee and their TODO list
+    employee_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    todo_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
 
-    # Filter tasks owned by the specified user
-    user_tasks = [task for task in data if task['userId'] == user_id]
+    # Fetch data from the API
+    employee_response = requests.get(employee_url)
+    todo_response = requests.get(todo_url)
 
-    # Define the CSV file name
-    csv_filename = f"{user_id}.csv"
+    # Check if the requests were successful
+    if employee_response.status_code != 200:
+        print("Error: Unable to fetch employee data.")
+        sys.exit(1)
+    if todo_response.status_code != 200:
+        print("Error: Unable to fetch TODO list data.")
+        sys.exit(1)
 
-    # Write the tasks to the CSV file
-    with open(csv_filename, 'w', newline='') as csv_file:
-        csv_writer = csv.writer(csv_file)
+    # Parse JSON responses
+    employee_data = employee_response.json()
+    todo_list = todo_response.json()
 
-        # Write the header row
+    return employee_data, todo_list
+
+
+def main():
+    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
+        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
+        sys.exit(1)
+
+    employee_id = int(sys.argv[1])
+
+    employee_data, todo_list = fetch_employee_data(employee_id)
+
+    employee_name = employee_data.get('name')
+    completed_tasks = [task for task in todo_list if task['completed']]
+    total_tasks = len(todo_list)
+
+    print(
+        f"Employee {employee_name} is done with tasks({len(completed_tasks)}/{total_tasks}):")
+
+    for task in completed_tasks:
+        print(f"\t{task['title']}")
+
+
+def export_to_csv(employee_id, employee_name, todo_list):
+    csv_file_name = f"{employee_id}.csv"
+
+    with open(csv_file_name, mode='w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_MINIMAL)
         csv_writer.writerow(
             ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
 
-        # Write each task as a row in the CSV file
-        for task in user_tasks:
+        for task in todo_list:
             csv_writer.writerow(
-                [task['userId'], task['username'], str(task['completed']), task['title']])
+                [employee_id, employee_name, task['completed'], task['title']])
 
-    # Check the number of tasks in the CSV
-    with open(csv_filename, 'r') as csv_file:
-        csv_reader = csv.reader(csv_file)
-        num_tasks = sum(1 for row in csv_reader) - \
-            1  # Subtract 1 for the header row
+    print(f"Data has been exported to {csv_file_name}")
 
-    # Check user ID and username retrieved
-    if num_tasks > 0:
-        with open(csv_filename, 'r') as csv_file:
-            csv_reader = csv.reader(csv_file)
-            header = next(csv_reader)  # Read the header row
-            first_row = next(csv_reader)  # Read the first data row
-            retrieved_user_id = int(first_row[0])
-            retrieved_username = first_row[1]
 
-            if retrieved_user_id == user_id and retrieved_username == data[0]['username']:
-                print("Number of tasks in CSV: OK")
-                print("User ID and Username: OK")
-            else:
-                print("Number of tasks in CSV: Error")
-                print("User ID and Username: Error")
-    else:
-        print("Number of tasks in CSV: Error")
-        print("User ID and Username: Error")
+def main():
+    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
+        print("Usage: python3 1-export_to_CSV.py <employee_id>")
+        sys.exit(1)
 
-    print("Formatting: OK")
+    employee_id = int(sys.argv[1])
+
+    employee_data, todo_list = fetch_employee_data(employee_id)
+
+    employee_name = employee_data.get('name')
+    completed_tasks = [task for task in todo_list if task['completed']]
+
+    print(
+        f"Employee {employee_name} is done with tasks({len(completed_tasks)}/{len(todo_list)}):")
+    for task in completed_tasks:
+        print(f"\t{task['title']}")
+
+    export_to_csv(employee_id, employee_name, todo_list)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python3 1-export_to_CSV.py <USER_ID>")
-        sys.exit(1)
-
-    user_id = int(sys.argv[1])
-    export_to_csv(user_id)
+    main()
