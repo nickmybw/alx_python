@@ -1,3 +1,5 @@
+"""the script will fetch data into a JSON file"""
+
 import requests
 import json
 from sys import argv
