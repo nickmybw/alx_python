@@ -20,22 +20,19 @@ if __name__ == "__main__":
         else:
             user_data = user_response.json()
             todo_data = todo_response.json()
+            user_id = user_data['id']
+            username = user_data['username']
 
-            # Define the CSV file name
-            csv_file_name = f"{user_data['id']}.csv"
+            csv_filename = f"{user_id}.csv"
 
-            # Open the CSV file for writing
-            with open(csv_file_name, mode="w", newline="") as csv_file:
+            with open(csv_filename, mode='w', newline='') as csv_file:
                 csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_MINIMAL)
-
-                # Write the CSV header
                 csv_writer.writerow(
                     ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-
-                # Write task data to the CSV file
                 for task in todo_data:
+                    task_id = task['id']
+                    task_title = task['title']
+                    task_completed = task['completed']
                     csv_writer.writerow(
-                        [user_data['id'], user_data['username'],
-                         task['completed'], task['title']])
-
-            print(f"Data exported to {csv_file_name}")
+                        [user_id, username, task_completed, task_title])
+            print(f"Data exported to {csv_filename}")
