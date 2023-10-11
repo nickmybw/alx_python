@@ -1,41 +1,34 @@
-import sys
 import requests
-python
-
-
-def get_employee_details(employee_id):
-    response = requests.get(
-        f'https://jsonplaceholder.typicode.com/users/{employee_id}')
-    return response.json()
-
-
-def get_employee_todos(employee_id):
-    response = requests.get(
-        f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos')
-    return response.json()
-
-
-def display_employee_todo_progress(employee_id):
-    employee_details = get_employee_details(employee_id)
-    employee_todos = get_employee_todos(employee_id)
-
-    done_tasks = 0
-    for todo in employee_todos:
-        if todo['completed']:
-            done_tasks += 1
-
-    print(
-        f"Employee {employee_details['name']} is done with tasks({done_tasks}/{len(employee_todos)}):")
-
-    for todo in employee_todos:
-        if todo['completed']:
-            print(f"\t{todo['title']}")
-
+from sys import argv
+from typing import List, Any  # Import List and Any types
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python3 main_4.py EMPLOYEE_ID")
-        sys.exit(1)
+    if len(argv) != 2:
+        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
+    else:
+        employee_id = int(argv[1])
+        user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+        todo_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
-    employee_id = int(sys.argv[1])
-    display_employee_todo_progress(employee_id)
+        user_response = requests.get(user_url)
+        todo_response = requests.get(todo_url)
+
+        if user_response.status_code != 200:
+            print("User not found")
+        elif todo_response.status_code != 200:
+            print("TODO data not found")
+        else:
+            user_data = user_response.json()
+            todo_data = todo_response.json()
+
+            # Define completed_tasks as a list of tasks with a line break
+            completed_tasks: List[Any] = [
+                task for task in todo_data if task['completed']
+            ]
+
+            total_tasks = len(todo_data)
+
+            print(
+                f"Employee {user_data['name']} is done with tasks({len(completed_tasks)}/{total_tasks}):")
+            for task in completed_tasks:
+                print(f"\t {task['title']}")
