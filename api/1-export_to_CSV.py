@@ -1,7 +1,7 @@
+import csv
 import requests
 from sys import argv
 from typing import List, Any  # Import List and Any types
-import csv  # Import the CSV module
 
 if __name__ == "__main__":
     if len(argv) != 2:
@@ -24,7 +24,8 @@ if __name__ == "__main__":
 
             # Define completed_tasks as a list of tasks with a line break
             completed_tasks: List[Any] = [
-                task for task in todo_data if task['completed']]
+                task for task in todo_data if task['completed']
+            ]
 
             total_tasks = len(todo_data)
 
@@ -33,13 +34,18 @@ if __name__ == "__main__":
             for task in completed_tasks:
                 print(f"\t {task['title']}")
 
-            # Export the data to a CSV file
-            csv_filename = f"{employee_id}.csv"
-            with open(csv_filename, mode='w', newline='') as csv_file:
-                csv_writer = csv.writer(csv_file)
-                csv_writer.writerow(
-                    ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+            # Export data in CSV format
+            filename = f"{employee_id}.csv"
+            with open(filename, mode='w') as csv_file:
+                fieldnames = ['USER_ID', 'USERNAME',
+                              'TASK_COMPLETED_STATUS', 'TASK_TITLE']
+                writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+                writer.writeheader()
                 for task in todo_data:
-                    csv_writer.writerow(
-                        [user_data['id'], user_data['name'], task['completed'], task['title']])
-            print(f"Data has been exported to {csv_filename}")
+                    writer.writerow({
+                        'USER_ID': employee_id,
+                        'USERNAME': user_data['username'],
+                        'TASK_COMPLETED_STATUS': task['completed'],
+                        'TASK_TITLE': task['title']
+                    })
