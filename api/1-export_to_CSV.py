@@ -7,7 +7,7 @@ if __name__ == "__main__":
     if len(argv) != 2:
         print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
     else:
-        employee_id = int(argv[1])
+        USER_ID = int(argv[1])
         user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
         todo_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
@@ -35,7 +35,8 @@ if __name__ == "__main__":
                 print(f"\t {task['title']}")
 
             # Export data in CSV format
-            filename = f"{employee_id}.csv"
+            
+            filename = f"{USER_ID}.csv"
             with open(filename, mode='w') as csv_file:
                 fieldnames = ['USER_ID', 'USERNAME',
                               'TASK_COMPLETED_STATUS', 'TASK_TITLE']
@@ -44,7 +45,7 @@ if __name__ == "__main__":
                 writer.writeheader()
                 for task in todo_data:
                     writer.writerow({
-                        'USER_ID': employee_id,
+                        'USER_ID': USER_ID,
                         'USERNAME': user_data['username'],
                         'TASK_COMPLETED_STATUS': task['completed'],
                         'TASK_TITLE': task['title']
