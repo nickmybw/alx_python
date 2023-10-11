@@ -1,32 +1,41 @@
-"""
-Export to CSV
-"""
-import csv
 import requests
+import csv
 from sys import argv
 
+if __name__ == "__main__":
+    if len(argv) != 2:
+        print("Usage: python3 1-export_to_CSV.py <employee_id>")
+    else:
+        employee_id = int(argv[1])
+        user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+        todo_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
-if __name__ == '__main__':
-    user_id = argv[1]
-    user_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(user_id)
-    todo_url = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(
-        user_id)
+        user_response = requests.get(user_url)
+        todo_response = requests.get(todo_url)
 
-    user_response = requests.get(user_url)
-    todo_response = requests.get(todo_url)
+        if user_response.status_code != 200:
+            print("User not found")
+        elif todo_response.status_code != 200:
+            print("TODO data not found")
+        else:
+            user_data = user_response.json()
+            todo_data = todo_response.json()
 
-    user_data = user_response.json()
-    todo_data = todo_response.json()
+            # Define the CSV file name
+            csv_file_name = f"{user_data['id']}.csv"
 
-    employee_name = user_data.get('username')
-    file_name = '{}.csv'.format(user_id)
+            # Open the CSV file for writing
+            with open(csv_file_name, mode="w", newline="") as csv_file:
+                csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_MINIMAL)
 
-    with open(file_name, mode='w') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',',
-                            quotechar='"', quoting=csv.QUOTE_ALL)
+                # Write the CSV header
+                csv_writer.writerow(
+                    ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
 
-        for task in todo_data:
-            task_completed = task.get('completed')
-            task_title = task.get('title')
-            writer.writerow(
-                [user_id, employee_name, task_completed, task_title])
+                # Write task data to the CSV file
+                for task in todo_data:
+                    csv_writer.writerow(
+                        [user_data['id'], user_data['username'],
+                         task['completed'], task['title']])
+
+            print(f"Data exported to {csv_file_name}")
